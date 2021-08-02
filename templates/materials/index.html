@@ -1,0 +1,349 @@
+{% extends 'materials/layouts/base.html' %}
+{% load static %}
+{% block apptitle %} Dashbord{% endblock %}
+{% block PagePosition %}
+    <h3 class="text-primary font-w600">Vehicule/Nouveau</h3>
+	<p class="mb-0">Ajout de Nouveau véhicules</p>
+{% endblock %}
+
+
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+    {% block PageOption %}
+<form method="post" action="{% url 'dashboard' %}" novalidate>
+        {% csrf_token %}
+        <a href="javascript:void(0);" class="btn btn-danger ml-auto">DELETE</a>
+                        <a href="javascript:void(0);" class="btn btn-success ml-3">PUBLISH</a>
+        <button class="btn btn-success ml-3" type="submit"  >SUBMIT</button>
+                        <div class="dropdown ml-3 d-inline-block">
+                            <div class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                                <i class="flaticon-381-controls-3 mr-2"></i> Filter
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-left">
+                                <a class="dropdown-item" href="#">A To Z List</a>
+                                <a class="dropdown-item" href="#">Z To A List</a>
+                            </div>
+                        </div>
+                        <div class="dropdown ml-3 d-inline-block">
+                            <div class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                                Newest
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-left">
+                                <a class="dropdown-item" href="#">Newest</a>
+                                <a class="dropdown-item" href="#">Old</a>
+                            </div>
+                        </div>
+    {% endblock %}
+
+    {% block content %}
+
+          <div class="col-xl-12 col-lg-12">
+                            <div class="card">
+
+                                <div class="card-body">
+                                     <div class="row">
+                                    <div class="col-xl-9 col-lg-9">
+                                        <div class="basic-form">
+
+                                            <div class="form-group">
+                                                {{ form.model_id|add_class:'form-control input-default'|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.immatriculation|add_class:'form-control input-default col-xl-3 col-lg-3'|as_crispy_field }}
+
+                                            </div>
+
+                                    </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3">
+                                        <div class="custom-file">
+                                                <input type="file" class="custom-file-input">
+                                                <label class="custom-file-label">Choose file</label>
+                                            </div>
+                                    </div>
+                            </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6">
+                                            <h3 class="text-primary font-w600">Model</h3>
+                                             <div class="form-group">
+                                               {{ form.Typevehicule|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.valeur_cat|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.couleur|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.nbre_porte|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.last_kilometrage|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6">
+                                            <h3 class="text-primary font-w600">Moteur</h3>
+                                            <div class="form-group">
+                                               {{ form.type_transmissin|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.type_energie_id|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.nbre_chevaux|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.puissance_fiscal|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.last_kilometrage|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     <form action="#" id="step-form-horizontal" class="step-form-horizontal">
+                                    <div>
+                                        <h4>Personal Info</h4>
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">First Name*</label>
+                                                        <input type="text" name="firstName" class="form-control" placeholder="Parsley" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Last Name*</label>
+                                                        <input type="text" name="lastName" class="form-control" placeholder="Montana" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Email Address*</label>
+                                                        <input type="email" class="form-control" id="inputGroupPrepend2" aria-describedby="inputGroupPrepend2" placeholder="example@example.com.com" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Phone Number*</label>
+                                                        <input type="text" name="phoneNumber" class="form-control" placeholder="(+1)408-657-9007" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Where are you from*</label>
+                                                        <input type="text" name="place" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <h4>Company Info</h4>
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-lg-12 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Company Name*</label>
+                                                        <input type="text" name="firstName" class="form-control" placeholder="Cellophane Square" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Company Email Address*</label>
+                                                        <input type="email" class="form-control" id="emial1" placeholder="example@example.com.com" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Company Phone Number*</label>
+                                                        <input type="text" name="phoneNumber" class="form-control" placeholder="(+1)408-657-9007" required>
+													</div>
+                                                </div>
+                                                <div class="col-lg-12 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="text-label">Your position in Company*</label>
+                                                        <input type="text" name="place" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <h4>Business Hours</h4>
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <h4>Monday *</h4>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="9.00" type="number" name="input1" id="input1">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="6.00" type="number" name="input2" id="input2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <h4>Tuesday *</h4>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="9.00" type="number" name="input3" id="input3">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="6.00" type="number" name="input4" id="input4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <h4>Wednesday *</h4>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="9.00" type="number" name="input5" id="input5">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="6.00" type="number" name="input6" id="input6">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <h4>Thrusday *</h4>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="9.00" type="number" name="input7" id="input7">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="6.00" type="number" name="input8" id="input8">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <h4>Friday *</h4>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="9.00" type="number" name="input9" id="input9">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 col-sm-3 mb-2">
+                                                    <div class="form-group">
+                                                        <input class="form-control" value="6.00" type="number" name="input10" id="input10">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <h4>Email Setup</h4>
+                                        <section>
+                                            <div class="row emial-setup">
+                                                <div class="col-lg-3 col-sm-6 col-6">
+                                                    <div class="form-group">
+                                                        <label for="mailclient11" class="mailclinet mailclinet-gmail">
+                                                            <input type="radio" name="emailclient" id="mailclient11">
+                                                            <span class="mail-icon">
+                                                                <i class="mdi mdi-google-plus" aria-hidden="true"></i>
+                                                            </span>
+                                                            <span class="mail-text">I'm using Gmail</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-6 col-6">
+                                                    <div class="form-group">
+                                                        <label for="mailclient12" class="mailclinet mailclinet-office">
+                                                            <input type="radio" name="emailclient" id="mailclient12">
+                                                            <span class="mail-icon">
+                                                                <i class="mdi mdi-office" aria-hidden="true"></i>
+                                                            </span>
+                                                            <span class="mail-text">I'm using Office</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-6 col-6">
+                                                    <div class="form-group">
+                                                        <label for="mailclient13" class="mailclinet mailclinet-drive">
+                                                            <input type="radio" name="emailclient" id="mailclient13">
+                                                            <span class="mail-icon">
+                                                                <i class="mdi mdi-google-drive" aria-hidden="true"></i>
+                                                            </span>
+                                                            <span class="mail-text">I'm using Drive</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-6 col-6">
+                                                    <div class="form-group">
+                                                        <label for="mailclient14" class="mailclinet mailclinet-another">
+                                                            <input type="radio" name="emailclient" id="mailclient14">
+                                                            <span class="mail-icon">
+                                                                <i class="fa fa-question-circle-o"
+                                                                    aria-hidden="true"></i>
+                                                            </span>
+                                                            <span class="mail-text">Another Service</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="skip-email text-center">
+                                                        <p>Or if want skip this step entirely and setup it later</p>
+                                                        <a href="javascript:void()">Skip step</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+        </form>
+    {% endblock %}
+{% block foot-javascript %}
+     <script src="{% static 'medic/vendor/jquery-steps/build/jquery.steps.min.js'%}"></script>
+     <script src="{% static 'medic/js/plugins-init/jquery-steps-init.js'%}"></script>
+<script>
+$( document ).ready( function() {
+    // On interdit le copier/coller du mail
+    $('#id_confirmation_mail').bind('copy paste', function(e) {
+        e.preventDefault();
+    });
+    // On affiche le calendrier lorsqu'on clique sur le champ date de naissance
+    $('#id_birth_date').click(function(){
+        $(this).parent().data("DateTimePicker").show();
+    });
+    // On teste la valeur de la date et on la force à vide si elle est mauvaise
+    $('#id_birth_date').change(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var val = $(this).val();
+        var format = new RegExp("^\\d{2}\/\\d{2}\/\\d{4}$");
+        if(!format.test(val)) {
+            $(this).val("");
+        }
+    });
+    // Afficher l'onglet suivant en cliquant sur le bouton suivant
+    $('.btnNext').click(function(){
+        $('.nav-tabs > .active + li a').trigger('click');
+        $(".nav-tabs + .tab-content").find(":input:visible:first").focus();
+    });
+    // Afficher l'onglet précédent en cliquant sur le bouton précédent
+    $('.btnPrevious').click(function(){
+        $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+        $(".nav-tabs + .tab-content").find(":input:visible:first").focus();
+    });
+});
+</script>
+{% endblock %}
