@@ -1,0 +1,187 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block head-css %}
+	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
+   <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'cork/assets/css/apps/invoice-add.css'%}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/plugins/dropify/dropify.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/assets/css/forms/theme-checkbox-radio.css'%}">
+    <link href="{% static 'cork/plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'cork/plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+
+  {% endblock %}
+
+      {% block app-Title%}Inventory{% endblock %}
+
+{% block breadcrumb%}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0);">Gestion des Entrepots/Bureaux</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="javscript:void(0);">Detail</a></li>
+    </ol>
+{% endblock %}
+
+{% block button-action%}
+
+
+{% endblock %}
+  {% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+         <div class="row invoice layout-top-spacing layout-spacing">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                        <div class="doc-container">
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                    <div class="invoice-content">
+
+                                        <div class="invoice-detail-body">
+
+                                            <div class="invoice-detail-title">
+
+                                                <div class="invoice-logo" style="border-bottom: 1px solid #ccc">
+                                                    <h3> Détail de l'Entrepot-Bureau ({{ site.site.libelle}}/{{ site.libelle }})</h3>
+
+                                                </div>
+
+                                                <div class="invoice-title">
+                                                    <a href="{% url 'entrepot.update' site.id %}" class="btn btn-outline-success">Modifier</a>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="invoice-detail-header">
+
+                                                <div class="row justify-content-between">
+
+                                                    <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4" style="font-size: 20px">
+
+                                                                    <p class="inv-customer-name" style="font-weight: bold">{{ site.reference}}-{{ site.site.libelle}}/{{ site.libelle }}</p>
+                                                                    <p class="inv-street-addr">Entrepot/Bureau Parent :{{ site.Adresse}}</p>
+                                                                    <p class="inv-street-addr">{{ site.Adresse}}</p>
+                                                                    <p class="inv-email-address">Tel : {{ site.Tel}}</p>
+                                                                    <p class="inv-email-address">Fax : {{ site.Fax}}</p>
+
+                                                                </div>
+                                                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 order-sm-0 order-1">
+                                                                    <div class="inv--payment-info">
+                                                                        <p><span class=" inv-subtitle">Description:</span> <span>{{ site.description}}</span></p>
+
+
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="invoice-detail-items">
+                                             <div class="invoice-detail-title">
+                                                <div class="invoice-logo" style="border-bottom: 1px solid #ccc">
+                                                    <h5> Listing des Bons de Livraison {{ site.libelle }}</h5>
+                                                </div>
+                                              <div class="invoice-title">
+                                                    <a href="{% url 'entrepot.AddStock' %}" class="btn btn-outline-success">Ajouter Un Bon de Livraison</a>
+                                                </div>
+                                             </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered item-table" style="font-size: 30px; font-weight: bold">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class=""></th>
+                                                                <th>Matériel</th>
+                                                                <th class="">Qté</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for mat in site.stock_set.all %}
+                                                            <tr>
+                                                                <td class="delete-item-row">
+
+                                                                </td>
+                                                                <td class="description">
+                                                                    {{ mat.materiel.name }}
+                                                                    </td>
+                                                                <td class="rate" align="rigth">
+                                                                   {{ mat.qte }}
+                                                                </td>
+
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+
+                                            </div>
+
+
+                                                <div class="inv--total-amounts" style="margin-right:20% ">
+
+                                                            <div class="row mt-4">
+                                                                <div class="col-sm-5 col-12 order-sm-0 order-1">
+                                                                </div>
+                                                                <div class="col-sm-7 col-12 order-sm-1 order-0">
+                                                                    <div class="text-sm-right">
+                                                                        <div class="row">
+
+                                                                            <div class="col-sm-8 col-7 grand-total-title">
+                                                                                <h4 class=""> Total : </h4>
+                                                                            </div>
+                                                                            <div class="col-sm-4 col-5 grand-total-amount">
+                                                                                <h4 class="">{{ total.qte__sum }}</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+        <!--  END CONTENT AREA  -->
+      </form>
+  {% endblock%}  <!-- END MAIN CONTAINER -->
+
+   {% block foot-javascript %}
+       <script src="{% static 'cork/plugins/dropify/dropify.min.js'%}"></script>
+    <script src="{% static 'cork/plugins/flatpickr/flatpickr.js'%}"></script>
+    <script src="{% static 'cork/assets/js/apps/invoice-add.js'%}"></script>
+ {% endblock %}
+    
+
+
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Title</title>
+        <style type="text/css">
+            body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4" style="font-size: 20px">
+
+                                                                    <p class="inv-customer-name" style="font-weight: bold">{{ site.reference}}-{{ site.site.libelle}}/{{ site.libelle }}</p>
+                                                                    <p class="inv-street-addr">Entrepot/Bureau Parent :{{ site.Adresse}}</p>
+                                                                    <p class="inv-street-addr">{{ site.Adresse}}</p>
+                                                                    <p class="inv-email-address">Tel : {{ site.Tel}}</p>
+                                                                    <p class="inv-email-address">Fax : {{ site.Fax}}</p>
+
+                                                                </div>
+            </div>
+        <div>
+        <div class='details'>
+            Bill to: <br/>
+            Amount:  <br/>
+            Date:
+            <hr class='hrItem' />
+        </div>
+
+
+           <table class="" style="font-size: 10px; font-weight: bold; border: 1px solid #000">
+                   <thead>
+                       <tr style="min-height: 90px">
+
+                             <th style=" padding: 3px">Matériel</th>
+                              <th class="">Qté</th>
+                       </tr>
+                   </thead>
+                         <tbody>
+                           {% for mat in site.stock_set.all %}
+                             <tr>
+
+                                <td class="description">
+                                   {{ mat.materiel.name }}
+                                </td>
+                                <td class="rate" align="rigth">
+                                  {{ mat.qte }}
+                               </td>
+
+                              </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+    </div>
+    </body>
+</html>

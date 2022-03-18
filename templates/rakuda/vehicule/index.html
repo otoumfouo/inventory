@@ -1,57 +1,76 @@
-{% extends 'rakuda/layouts/base.html' %}
+{% extends 'cork/base.html' %}
 {% load static %}
-
+{% load html_key %}
  {% load widget_tweaks %}
  {% load crispy_forms_tags %}
-  {% block css %}
+  {% block head-css %}
 	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
-    {% endblock %}
-  {% block content %}
+   <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'cork/assets/css/apps/invoice-add.css'%}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/plugins/dropify/dropify.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/assets/css/forms/theme-checkbox-radio.css'%}">
+    <link href="{% static 'cork/plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'cork/plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+<style>
+.invoice-detail-notes{
+    height: 88px;
+}
+</style>
+  {% endblock %}
 
+      {% block app-Title%}Inventory{% endblock %}
+
+{% block breadcrumb%}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0);">Gestion des Sites</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="javscript:void(0);">Listing</a></li>
+    </ol>
+{% endblock %}
+
+{% block button-action%}
+
+     <form method="post" action="" novalidate>
+            {% csrf_token %}
+    <div class="ms-auto">
+
+                        <a href="{% url 'vehiculeAdd' %}" class="btn btn-outline-primary">Ajouter un Véhicule</a>
+
+					</div>
+{% endblock %}
+  {% block content %}
+    {% for message in messages %}
+        <div style="display: none" id="message">
+
+            {{ message | safe }}
+        </div>
+    {% endfor %}
           <div class="row">
           <form method="post" action="{% url 'dashboard' %}" novalidate>
             {% csrf_token %}
 					<div class="col-xl-12 mx-auto">
-						<!--breadcrumb-->
-				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Forms</div>
-					<div class="ps-3">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb mb-0 p-0">
-								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-								</li>
-								<li class="breadcrumb-item active" aria-current="page">Input Group</li>
-							</ol>
-						</nav>
-					</div>
-					<div class="ms-auto">
-                        <a href="#" class="btn btn-danger">Annuler</a>
-                        <button type="submit" class="btn btn-success">Sauvegarder</button>
 
-					</div>
-				</div>
-				<!--end breadcrumb-->
 						<hr/>
 						  <div class="card radius-10">
 					<div class="card-body">
 						<div class="d-flex align-items-center">
 							<div>
-								<h5 class="mb-0">Orders Summary</h5>
+								<h5 class="mb-0">Liste des Véhicules</h5>
 							</div>
 							<div class="font-22 ms-auto"><i class="bx bx-dots-horizontal-rounded"></i>
 							</div>
 						</div>
 						<hr>
 						<div class="table-responsive">
-							<table class="table align-middle mb-0">
+							<table class="table align-middle mb-0" id="listing">
 								<thead class="table-light">
 									<tr>
-										<th>Order id</th>
+										<th>#</th>
 										<th>Immatriculation</th>
 										<th>Model</th>
 										<th>Numero de Chassi</th>
-										<th>Date</th>
-										<th>Price</th>
+										<th>ANNEE ACQUISTION</th>
+
 										<th>Status</th>
 										<th>Action</th>
 									</tr>
@@ -67,20 +86,28 @@
 													<img src="../{{ vehicule.model_id.fabricant_id.image}}" alt="">
 												</div>
 												<div class="ms-2">
-													<h6 class="mb-1 font-14">{{ vehicule.model_id.fabricant_id.libelle}}/{{ vehicule.model_id.libelle}}-{{ vehicule.fabricat_year }}</h6>
+													<h6 class="mb-1 font-14">{{ vehicule.model_id.fabricant_id.libelle}}/{{ vehicule.model_id.libelle}}-{{ vehicule.materials.fabricat_year }}</h6>
 												</div>
 											</div>
 										</td>
 										<td>{{ vehicule.num_chassi }}</td>
-										<td>12 Jul 2020</td>
-										<td>$64.00</td>
+										<td>{{ vehicule.materials.name }}</td>
+
 										<td>
-											<div class="badge rounded-pill bg-light-info text-info w-100">In Progress</div>
-										</td>
+                                            {% if vehicule.status == '1' %}
+											    <div class="badge rounded-pill bg-success w-100">BON ETAT</div>
+                                                {% else %}
+                                                <div class="badge rounded-pill bg-danger  w-100">EN PANNE</div>
+										    {% endif %}
+                                        </td>
 										<td>
-											<div class="d-flex order-actions">	<a href="javascript:;" class=""><i class="bx bx-cog"></i></a>
-												<a href="javascript:;" class="ms-4"><i class="bx bx-down-arrow-alt"></i></a>
-											</div>
+											 <div class="d-flex order-actions">
+                                                        <a href="{% url 'vehicule.update' vehicule.id %}" class="btn btn-outline-info ms-4"><i class="fas fa-cog"></i></a>
+                                                        <a href="javascript:;" class="btn btn-outline-danger ms-4 desactive"
+                                                           style="margin-left: 10px" rel="{{ vehicule.id }}"
+                                   data-toggle-name="{{  vehicule.immatriculation }}">
+                                                            <i class="fas fa-trash"></i></a>
+                                                    </div>
 										</td>
 									</tr>
 								{% endfor %}
@@ -92,14 +119,75 @@
 					</div>
           </form>
 				</div>
+       <div class="modal fade " id="modal-default">
+                      <form method="POST" action="{% url 'vehicule.delete' %}">
+                        <div class="modal-dialog ">
+                          <div class="modal-content ">
+                            <div class="modal-header">
+
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body" style="alignment: center">
+                     <!-- Create a Form -->
+
+                                <!-- Security token by Django -->
+                                {% csrf_token %}
+                                <h5 id="text-alert">ÊTES VOUS SUR DE VOULOIR DÉSACTIVER/ACTIVER LA STRUCTURE?  </h5>
+                                <h3 style="font-weight: bold" id="name"></h3>
+
+                                <input type="hidden" value="" name="pk" id="pk" />
+                                <input type="hidden" value="" name="is_active" id="is_active" />
+
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Fermer</button>
+                      <button type="submit" class="btn btn-danger" id="confirm">Confimer</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                      </form>
+                <!-- /.modal-dialog -->
+              </div>
 
     {% endblock %}
 
-{% block foot-javascript %}
+ {% block foot-javascript %}
+     <script src="{% static 'cork/plugins/table/datatable/datatables.js'%}"></script>
+    <script src="{% static 'cork/plugins/table/datatable/datatables.js'%}"></script>
+    <script src="{% static 'cork/plugins/table/datatable/button-ext/dataTables.buttons.min.js'%}"></script>
   <script>
    $(document).on('change', '.model', function() {
        loadImage()
     });
+
+   $("#listing").DataTable({
+        "language": {
+                            "url": "{% static 'dataTable-fr.json' %}"
+                            },
+   });
+    $(".desactive").click(function(){
+         $("#pk").val($(this).attr("rel"))
+         $("#is_active").val($(this).attr("rev"))
+         $("#name").html('<center>  "LE  VEHICULE ' + $(this).attr("data-toggle-name")+' " ? </center>')
+
+          action = "SUPPRIMER"
+          if($(this).attr("rev") == "True") {
+              action = "DÉSACTIVER"
+          }
+
+          $("#text-alert").html("<b>ÊTES VOUS SUR DE VOULOIR  "+action+" </b>")
+          $("#confirm").html(action)
+          $('#modal-default').modal({
+              //show : true,
+              backdrop : 'static',
+              keyboard:false
+          });
+
+      });
  loadImage()
    function loadImage() {
        model = $('.model').val()
@@ -121,7 +209,22 @@
                 });
        }
    }
+{% if messages %}
+     {% for message in messages %}
+         message = $("#message").html()
+         console.log(message)
+        notif(message)
+	{% endfor %}
+{% endif %}
 
+  function notif(message) {
+      Lobibox.notify("success", {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            msg: message
+        });
+  }
 
   </script>
  {% endblock %}

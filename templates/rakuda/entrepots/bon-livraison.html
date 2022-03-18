@@ -1,0 +1,205 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block head-css %}
+	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
+   <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'cork/assets/css/apps/invoice-add.css'%}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/plugins/dropify/dropify.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/assets/css/forms/theme-checkbox-radio.css'%}">
+    <link href="{% static 'cork/plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'cork/plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+
+  {% endblock %}
+
+      {% block app-Title%}Inventory{% endblock %}
+
+{% block breadcrumb%}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0);">Gestion des Sites</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="javscript:void(0);">Listing</a></li>
+    </ol>
+{% endblock %}
+
+{% block button-action%}
+<form method="post" action="" novalidate>
+            {% csrf_token %}
+    <div class="ms-auto">
+                        <a href="{% url 'materialList' %}" class="btn btn-outline-danger">
+                            Annuler</a>
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+
+					</div>
+
+{% endblock %}
+  {% block content %}
+        <!--  BEGIN CONTENT AREA  -->
+         <div class="row invoice layout-top-spacing layout-spacing">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                        <div class="doc-container">
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                    <div class="invoice-content">
+
+                                        <div class="invoice-detail-body">
+
+                                            <div class="invoice-detail-title">
+
+                                                <div class="invoice-logo" style="border-bottom: 1px solid #ccc">
+                                                    <h3> Inventaire Bureau/Entrepots</h3>
+
+                                                </div>
+
+                                                <div class="invoice-title">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="invoice-detail-header">
+
+                                                <div class="row justify-content-between">
+
+                                                    <div class="col-xl-5 invoice-address-company">
+
+                                                        <div class="invoice-address-company-fields">
+
+                                                            <div class="form-group row"style="display: none">
+                                                                <label for="company-name" class="col-sm-3 col-form-label col-form-label-sm">Libelle</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control form-control-sm" id="company-names"  value="#{{ site.libelle}}" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row" >
+                                                                <div class="col-sm-9">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row" >
+                                                                <div class="col-sm-9">
+                                                                     {{ form.numero|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-8 col-12 order-sm-0 order-1">
+                                                                    <div class="form-group row" >
+                                                                <div class="col-sm-9">
+                                                                    {{ form.entrepot_id|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+                                                                </div>
+
+
+
+
+
+
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="invoice-detail-items">
+                                                <div class="invoice-logo" style="border-bottom: 1px solid #ccc">
+                                                    <h5> Listing des Articles {{ site.libelle }}</h5>
+                                                </div>
+                                                <div class="table table-bordered item-table">
+                                                      <table class="table">
+                                            {{ detail.management_form }}
+
+                                            {% for form in detail.forms %}
+                                                {% if forloop.first %}
+                                                    <thead>
+                                                    <tr>
+                                                        {% for field in form.visible_fields %}
+                                                            <th>{{ field.label|capfirst }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    </thead>
+                                                {% endif %}
+                                                <tr class="formset_row">
+                                                    {% for field in form.visible_fields %}
+                                                        <td>
+                                                            {# Include the hidden fields in the form #}
+                                                            {% if forloop.first %}
+                                                                {% for hidden in form.hidden_fields %}
+                                                                    {{ hidden }}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                            {{ field.errors.as_ul }}
+
+                                                            {{ field }}
+                                                       <small> <br/>{{ field.help_text }}</small>
+                                                        </td>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+
+                                                </div>
+
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+        <!--  END CONTENT AREA  -->
+      </form>
+  {% endblock%}  <!-- END MAIN CONTAINER -->
+
+   {% block foot-javascript %}
+       <script src="{% static 'cork/plugins/dropify/dropify.min.js'%}"></script>
+    <script src="{% static 'cork/plugins/flatpickr/flatpickr.js'%}"></script>
+    <script src="{% static 'cork/assets/js/apps/invoice-add.js'%}"></script>
+       <script src="{% static 'formset/jquery.formset1.js' %}"></script>
+       <script>
+            $('.formset_row').formset({
+        addText: '<i class="fas fa-plus"> </i>Ajouter une Ligne',
+        addCssClass: "btn btn-outline-primary btn-rounded btn-sm",
+        deleteText: '<i class="fas fa-trash"> </i>',
+        prefix: 'form_set',
+        formTemplate: null,
+        added : function($row) {
+            //console.log($row)
+           index = $row[0].rowIndex
+           for (let i = 0; i <= index ; i++) {
+               }
+
+
+        }
+    });
+       </script>
+ {% endblock %}
+
+
+
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+

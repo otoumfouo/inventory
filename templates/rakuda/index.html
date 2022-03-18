@@ -7,9 +7,14 @@
 	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
     {% endblock %}
   {% block content %}
+{% for message in messages %}
+    <div style="display: none" id="message">
 
+        {{ message | safe }}
+    </div>
+{% endfor %}
           <div class="row">
-          <form method="post" action="{% url 'dashboard' %}" novalidate>
+          <form method="post" action="{% url 'vehiculeAdd' %}" novalidate>
             {% csrf_token %}
 					<div class="col-xl-12 mx-auto">
 						<!--breadcrumb-->
@@ -46,7 +51,7 @@
                                                {{ form.immatriculation|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
                                             </div>
                                             <div class="col-xl-3 col-lg-3">
-                                               {{ form.fabricat_year|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
+                                               {{ Matform.fabricat_year|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
                                             </div>
                                             </div>
 
@@ -71,7 +76,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                               {{ form.reference|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                               {{ Matform.reference|add_class:'form-control-sm input-default '|as_crispy_field }}
                                             </div>
 
                                             <div class="form-group">
@@ -87,13 +92,13 @@
                                         <div class="col-xl-4 col-lg-4">
                                             <h3 class="text-primary font-w600">&nbsp;</h3>
                                              <div class="form-group">
-                                               {{ form.valeur_cat|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                               {{ Matform.valeur_cat|add_class:'form-control-sm input-default '|as_crispy_field}}
                                             </div>
                                             <div class="form-group">
-                                               {{ form.valeur_achat|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                               {{ Matform.valeur_achat|add_class:'form-control-sm input-default '|as_crispy_field }}
                                             </div>
                                             <div class="form-group">
-                                               {{ form.valeur_residuel|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                               {{ Matform.valeur_residuel|add_class:'form-control-sm input-default '|as_crispy_field }}
                                             </div>
 
                                             <div class="row"><div class="col-xl-9 col-lg-9">
@@ -104,7 +109,7 @@
                                             </div>
                                             </div>
                                             <div class="form-group">
-                                               {{ form.description|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                               {{ Matform.description|add_class:'form-control-sm input-default '|as_crispy_field }}
                                             </div>
                                         </div>
                                         <div class="col-xl-4 col-lg-4">
@@ -113,7 +118,7 @@
                                                {{ form.type_transmissin|add_class:'form-control-sm input-default '|as_crispy_field }}
                                             </div>
                                             <div class="form-group">
-                                               {{ form.type_energie_id|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                               {{ form.type_energie_id|add_class:'form-control-sm input-default '|as_crispy_field}}
                                             </div>
                                             <div class="form-group">
                                                {{ form.nbre_chevaux|add_class:'form-control-sm input-default '|as_crispy_field }}
@@ -139,7 +144,7 @@
    $(document).on('change', '.model', function() {
        loadImage()
     });
- loadImage()
+    loadImage()
    function loadImage() {
        model = $('.model').val()
 
@@ -160,7 +165,21 @@
                 });
        }
    }
+{% if messages %}
+     {% for message in messages %}
+         message = $("#message").html()
+         console.log(message)
+        notif(message)
+	{% endfor %}
+{% endif %}
 
-
+  function notif(message) {
+      Lobibox.notify("success", {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            msg: message
+        });
+  }
   </script>
  {% endblock %}

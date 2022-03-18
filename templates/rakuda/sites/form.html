@@ -1,0 +1,168 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block head-css %}
+	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
+   <style>
+   .form_heigth{
+       height: 35px;
+   }
+   </style>
+    {% endblock %}
+
+
+      {% block app-Title%}Inventory{% endblock %}
+{% block breadcrumb%}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'site' %}">Gestion des sites</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="javscript:void(0);">Ajouter</a></li>
+    </ol>
+{% endblock %}
+
+{% block button-action%}
+    <form method="post" action="" novalidate>
+            {% csrf_token %}
+    <div class="ms-auto">
+                        <a href="{% url 'materialList' %}" class="btn btn-outline-danger">
+                            Annuler</a>
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+
+					</div>
+{% endblock %}
+  {% block content %}
+{% for message in messages %}
+    <div style="display: none" id="message">
+
+        {{ message | safe }}
+    </div>
+{% endfor %}
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom:24px;">
+
+					<div class="col-xl-12 mx-auto">
+
+						<div class="card">
+							<div class="card-body">
+                             <div class="row">
+                                    <div class="col-xl-9 col-lg-9">
+                                        <div class="basic-form">
+                                            <div class="form-group-sm">
+
+                                            </div>
+                                            <br/>
+                                            <div class="row">
+                                                 <div class="col-xl-6 col-lg-6">
+                                               {{ siteForm.libelle|add_class:' form-control'|as_crispy_field }}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6">
+                                               {{ siteForm.parent|add_class:' form-control'|as_crispy_field }}
+                                            </div>
+                                            </div>
+
+
+                                    </div>
+
+                                    </div>
+
+                                    <div class="col-xl-2 col-lg-2">
+                                        <div class="rounded-3" id="imageField">
+                                            <img src="{% static  'rakuda/assets/images/avatars/placeholder.png'%}" alt="Admin" id="logoFabricant" class="rounded-3" width="120">
+
+                                            </div>
+                                    </div>
+                            </div>
+                                 <br>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6">
+                                            <h3 class="text-primary font-w200">Infos complémentaire</h3>
+
+                                            <div class="form-group">
+                                               {{ siteForm.Tel|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+
+                                            <div class="form-group">
+                                               {{ siteForm.fax|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ siteForm.Adresse|add_class:'form-control input-default ' |as_crispy_field}}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ siteForm.etat|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <h3 class="text-primary font-w600">&nbsp;</h3>
+
+                                            <div class="form-group">
+                                               {{ siteForm.code_postal|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ siteForm.ville|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+                                             <div class="form-group">
+                                               {{ siteForm.pays|add_class:'form-control input-default '|as_crispy_field}}
+                                            </div>
+
+                                            <div class="form-group">
+                                               {{ siteForm.description|add_class:'form-control input-default '|as_crispy_field }}
+                                            </div>
+
+                                        </div>
+
+                                        </div>
+
+                                    </div>
+							</div>
+						</div>
+
+
+				</div>
+</form>
+    {% endblock %}
+
+{% block foot-javascript %}
+  <script>
+   $(document).on('change', '.model', function() {
+       loadImage()
+    });
+    loadImage()
+   function loadImage() {
+       model = $('.model').val()
+
+       if(model) {
+           $.ajax({
+                    url : '{% url 'loadImage' %}' ,
+                    method : 'GET' ,
+                    data: { id : model },
+                    success : function(data){
+                        if(data.image != ""){
+                            $("#logoFabricant").attr("src",data.image)
+                         //$("#logoFabricant").src =data.image
+                        }else{
+                           $("#logoFabricant").attr("src",'{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}')
+                        }
+                        //console.log(data.image)
+                    }
+                });
+       }
+   }
+{% if messages %}
+     {% for message in messages %}
+         message = $("#message").html()
+         console.log(message)
+        notif(message)
+	{% endfor %}
+{% endif %}
+
+  function notif(message) {
+      Lobibox.notify("success", {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            msg: message
+        });
+  }
+  </script>
+ {% endblock %}

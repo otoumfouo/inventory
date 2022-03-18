@@ -1,0 +1,94 @@
+[
+  {
+    "model": "materials.EtatMateriel",
+    "pk": 1,
+    "fields": {
+      "libelle": "BON"
+    }
+  },{
+    "model": "materials.EtatMateriel",
+    "pk": 2,
+    "fields": {
+      "libelle": "MOYEN"
+    }
+  },{
+    "model": "materials.EtatMateriel",
+    "pk": 3,
+    "fields": {
+      "libelle": "MAUVAIS"
+    }
+  },{
+    "model": "materials.ModeAcquisition",
+    "pk": 1,
+    "fields": {
+      "libelle": "Public (ETAT)"
+    }
+  },{
+    "model": "materials.ModeAcquisition",
+    "pk": 2,
+    "fields": {
+      "libelle": "PRIVE"
+    }
+  },{
+    "model": "materials.ModeAcquisition",
+    "pk": 3,
+    "fields": {
+      "libelle": "PERSONNEL"
+    }
+  },{
+    "model": "materials.CategorieMateriel",
+    "pk": 1,
+    "fields": {
+      "libelle": "Materiel Informatique"
+    }
+  },{
+    "model": "materials.CategorieMateriel",
+    "pk": 2,
+    "fields": {
+      "libelle": "Equipement Scientifique"
+    }
+  },{
+    "model": "materials.CategorieMateriel",
+    "pk": 3,
+    "fields": {
+      "libelle": "Mobilier & Matériels Bureau"
+    }
+  },{
+    "model": "materials.CategorieMateriel",
+    "pk": 4,
+    "fields": {
+      "libelle": "Matériels de Sécurité"
+    }
+  },{
+    "model": "materials.CategorieMateriel",
+    "pk": 5,
+    "fields": {
+      "libelle": "Matériels de Transmission (Communication)"
+    }
+  },{
+    "model": "materials.CategorieMateriel",
+    "pk": 6,
+    "fields": {
+      "libelle": "Vehicules"
+    }
+  },{
+    "model": "materials.ModeAcquisition",
+    "pk": 1,
+    "fields": {
+      "libelle": "Privé"
+    }
+  },{
+    "model": "materials.ModeAcquisition",
+    "pk": 2,
+    "fields": {
+      "libelle": "Personnel"
+    }
+  },{
+    "model": "materials.ModeAcquisition",
+    "pk": 3,
+    "fields": {
+      "libelle": "Public (Etat)"
+    }
+  }
+
+]

@@ -1,0 +1,185 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block css %}
+	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+  {% block content %}
+{% for message in messages %}
+    <div style="display: none" id="message">
+
+        {{ message | safe }}
+    </div>
+{% endfor %}
+          <div class="row">
+          <form method="post" action="" novalidate>
+            {% csrf_token %}
+					<div class="col-xl-12 mx-auto">
+						<!--breadcrumb-->
+				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<div class="breadcrumb-title pe-3">Forms</div>
+					<div class="ps-3">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0 p-0">
+								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Input Group</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="ms-auto">
+                        <a href="#" class="btn btn-danger">Annuler</a>
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+
+					</div>
+				</div>
+				<!--end breadcrumb-->
+						<hr/>
+						<div class="card">
+							<div class="card-body">
+                             <div class="row">
+                                    <div class="col-xl-9 col-lg-9">
+                                        <div class="basic-form">
+                                            <div class="form-group">
+                                                {{ form.model_id|add_class:'form-select input-default model'|as_crispy_field }}
+                                            </div>
+                                            <br/>
+                                            <div class="row">
+                                                 <div class="col-xl-3 col-lg-3">
+                                               {{ form.immatriculation|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
+                                            </div>
+                                            <div class="col-xl-3 col-lg-3">
+                                               {{ Matform.fabricat_year|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
+                                            </div>
+                                            </div>
+
+
+                                    </div>
+
+                                    </div>
+
+                                    <div class="col-xl-2 col-lg-2">
+                                        <div class="rounded-3" id="imageField">
+                                            <img src="{% static  'rakuda/assets/images/avatars/placeholder.png'%}" alt="Admin" id="logoFabricant" class="rounded-3" width="120">
+
+                                            </div>
+                                    </div>
+                            </div>
+                                 <br>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4">
+                                            <h3 class="text-primary font-w200">Vehicule</h3>
+                                             <div class="form-group">
+                                               {{ form.Typevehicule|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+
+                                            <div class="form-group">
+                                               {{ Matform.reference|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+
+                                            <div class="form-group">
+                                               {{ form.num_chassi|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.couleur|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.nbre_porte|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <h3 class="text-primary font-w600">&nbsp;</h3>
+                                             <div class="form-group">
+                                               {{ Matform.valeur_cat|add_class:'form-control-sm input-default '|as_crispy_field}}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ Matform.valeur_achat|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ Matform.valeur_residuel|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+
+                                            <div class="row"><div class="col-xl-9 col-lg-9">
+                                               {{ form.last_kilometrage|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
+                                            </div>
+                                            <div class="col-xl-3 col-lg-3">
+                                               {{ form.metrage|add_class:'form-control-sm input-default col-xl-3 col-lg-3'|as_crispy_field }}
+                                            </div>
+                                            </div>
+                                            <div class="form-group">
+                                               {{ Matform.description|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <h3 class="text-primary font-w600">Moteur</h3>
+                                            <div class="form-group">
+                                               {{ form.type_transmissin|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.type_energie_id|add_class:'form-control-sm input-default '|as_crispy_field}}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.nbre_chevaux|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.puissance_fiscal|add_class:'form-control-sm input-default '|as_crispy_field }}
+                                            </div>
+                                            <div class="form-group">
+
+                                            </div>
+                                        </div>
+                                    </div>
+							</div>
+						</div>
+					</div>
+          </form>
+				</div>
+
+    {% endblock %}
+
+{% block foot-javascript %}
+  <script>
+   $(document).on('change', '.model', function() {
+       loadImage()
+    });
+    loadImage()
+   function loadImage() {
+       model = $('.model').val()
+
+       if(model) {
+           $.ajax({
+                    url : '{% url 'loadImage' %}' ,
+                    method : 'GET' ,
+                    data: { id : model },
+                    success : function(data){
+                        if(data.image != ""){
+                            $("#logoFabricant").attr("src",data.image)
+                         //$("#logoFabricant").src =data.image
+                        }else{
+                           $("#logoFabricant").attr("src",'{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}')
+                        }
+                        //console.log(data.image)
+                    }
+                });
+       }
+   }
+{% if messages %}
+     {% for message in messages %}
+         message = $("#message").html()
+         console.log(message)
+        notif(message)
+	{% endfor %}
+{% endif %}
+
+  function notif(message) {
+      Lobibox.notify("success", {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            msg: message
+        });
+  }
+  </script>
+ {% endblock %}

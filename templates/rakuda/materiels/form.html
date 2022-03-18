@@ -1,0 +1,209 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+{% load html_key %}
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block head-css %}
+	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
+   <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{% static 'cork/assets/css/apps/invoice-add.css'%}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/plugins/dropify/dropify.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'cork/assets/css/forms/theme-checkbox-radio.css'%}">
+    <link href="{% static 'cork/plugins/flatpickr/flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'cork/plugins/flatpickr/custom-flatpickr.css'%}" rel="stylesheet" type="text/css">
+    <!--  END CUSTOM STYLE FILE  -->
+<style>
+.invoice-detail-notes{
+    height: 88px;
+}
+</style>
+  {% endblock %}
+
+      {% block app-Title%}Inventory{% endblock %}
+
+{% block breadcrumb%}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0);">Gestion des Sites</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="javscript:void(0);">Listing</a></li>
+    </ol>
+{% endblock %}
+
+{% block button-action%}
+
+     <form method="post" action="" novalidate>
+            {% csrf_token %}
+    <div class="ms-auto">
+                        <a href="{% url 'materialList' %}" class="btn btn-outline-danger">
+                            Annuler</a>
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+
+					</div>
+{% endblock %}
+  {% block content %}
+
+
+
+        <!--  BEGIN CONTENT AREA  -->
+         <div class="row invoice layout-top-spacing layout-spacing">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                        <div class="doc-container">
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                    <div class="invoice-content">
+
+                                        <div class="invoice-detail-body">
+
+                                            <div class="invoice-detail-title">
+
+                                                <div class="invoice-logo" >
+                                                    <h3 style="border-bottom: 1px solid #ccc"> Ajout Matériel  </h3>
+                                                    <small>
+                                                        Veuillez renseigner les informations du matériel
+                                                          <br>  <i style="color: red">(*)</i> Les champs sont obligatoires.
+                                                        </small>
+                                                </div>
+
+                                                <div class="invoice-title">
+                                                            <div class="col-sm-12">
+                                                                   {{ Matform.type|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="invoice-detail-header">
+
+                                                <div class="row justify-content-between">
+
+                                                    <div class="col-xl-5 invoice-address-company">
+
+                                                        <div class="invoice-address-company-fields">
+
+                                                            <div class="form-group row"style="display: none">
+                                                                <label for="company-name" class="col-sm-3 col-form-label col-form-label-sm">Libelle</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control form-control-sm" id="company-names"  value="#{{ site.libelle}}" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row" >
+                                                                <div class="col-sm-9">
+                                                                     {{ Matform.reference|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row" >
+                                                                <div class="col-sm-9">
+                                                                    {{ Matform.name|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row" >
+                                                                <div class="col-sm-9">
+                                                                    {{ Matform.frabriquant|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row" >
+                                                                <div class="col-sm-9">
+                                                                    {{ Matform.fabricat_year|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group row">
+
+
+                                                            </div>
+
+
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-xl-5 invoice-address-client">
+
+
+
+                                                        <div class="invoice-address-client-fields">
+
+                                                             <div class="form-group row">
+
+                                                                <div class="col-sm-9">
+                                                                   {{ Matform.valeur_cat|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+
+                                                                <div class="col-sm-9">
+                                                                   {{ Matform.valeur_achat|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+
+                                                                <div class="col-sm-9">
+                                                                   {{ Matform.mode_acquisition|add_class:' form-control'|as_crispy_field }}
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                            <div class="invoice-detail-note">
+
+                                                <div class="row">
+
+                                                    <div class="col-md-12 align-self-center">
+
+                                                        <div class="form-group row invoice-note">
+                                                            <label for="invoice-detail-notes" class="col-sm-12 col-form-label col-form-label-sm">Notes:</label>
+                                                            <div class="col-sm-12">
+                                                                 {{ Matform.description|add_class:' form-control invoice-detail-notes'| placeholder:"Notes - For example, Observations"}}
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+        <!--  END CONTENT AREA  -->
+      </form>
+  {% endblock%}  <!-- END MAIN CONTAINER -->
+
+   {% block foot-javascript %}
+       <script src="{% static 'cork/plugins/dropify/dropify.min.js'%}"></script>
+    <script src="{% static 'cork/plugins/flatpickr/flatpickr.js'%}"></script>
+    <script src="{% static 'cork/assets/js/apps/invoice-add.js'%}"></script>
+ {% endblock %}
+
+
+
+    <!-- END GLOBAL MANDATORY SCRIPTS -->

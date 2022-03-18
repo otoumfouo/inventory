@@ -1,0 +1,281 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+{% load html_key %}
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block head-css %}
+      <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="{% static 'cork/plugins/apex/apexcharts.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'cork/assets/css/dashboard/dash_1.css'%}" rel="stylesheet" type="text/css" />
+    <style class="dark-theme">
+        #chart-2 path {
+            stroke: #0e1726;
+        }
+    </style>
+
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+  {% endblock %}
+  {% block content %}
+       <div class="row layout-top-spacing">
+
+                     <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+
+                        <div class="widget widget-account-invoice-three">
+
+                            <div class="widget-heading">
+
+                                <div class="wallet-balance">
+                                    <p style="font-size: 34px">Nombre Total de Matériel </p>
+                                    <h5 class=""><span class="w-currency"></span>{{ Total }}</h5>
+                                </div>
+                            </div>
+
+                            <div class="widget-amount">
+                            {% for site in site_info %}
+                                <div class="w-a-info funds-received col-sm-{{ nbre_cellule }}">
+                                    <span>{{ site.label }} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg></span>
+                                    <p>{{ site.nbre }}</p>
+                                </div>
+                            {% endfor %}
+
+
+
+
+                            </div>
+
+                            <div class="widget-content">
+
+                                <div class="bills-stats">
+                                    <span>par Bureau</span>
+                                </div>
+
+                                <div class="invoice-list">
+
+                                    <div class="inv-detail">
+                                        {% for entrepot in entrepots %}
+                                         <div class="info-detail-1">
+                                            <p>{{ entrepot.site.libelle }}  / {{entrepot.libelle }}</p>
+                                            <p><span class="w-currency"></span> <span class="bill-amount">
+
+                                                {{ entrepot.stock_set.all|sum:'qte' }}
+                                            </span></p>
+                                        </div>
+                                        {% endfor %}
+
+
+
+                                    </div>
+
+                                    <div class="inv-action">
+
+                                        <a href="javascript:void(0);" class="btn btn-outline-primary pay-now">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-chart-two">
+                            <div class="widget-heading">
+                                <h5 class="">Quantité de Matériel Par site</h5>
+                            </div>
+                            <div class="widget-content">
+                                <div id="source" class=""></div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget widget-table-three">
+
+                            <div class="widget-heading">
+                                <h5 class="">Listings  Materiel</h5>
+                            </div>
+
+                            <div class="widget-content">
+                              <div class="table-responsive">
+                                    <table class="table align-middle mb-0" id="listing">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Ref</th>
+                                                <th>Description/libelle</th>
+                                                <th>Année de Fabrication</th>
+                                                <th>type de matériel</th>
+                                                <th>Stock Phisique</th>
+                                                <th>commentaire</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for mat in materiels_list %}
+                                            <tr>
+
+                                                <td>{{ mat.reference }}</td>
+                                                <td>{{ mat.name }} </td>
+                                                <td>{{ mat.fabricat_year }}</td>
+                                                <td>{{ mat.type }}</td>
+                                                <td>{{ mat.stock_set.all|sum:'qte' }}</td>
+                                                <td>{{ mat.description }}</td>
+
+                                                <td>
+                                                    <div class="d-flex order-actions">
+                                                        <a href="{% url 'materiel.update' mat.id %}" class="btn btn-outline-info ms-4"><i class="fas fa-cog"></i></a>
+                                                        <a href="javascript:;" class="btn btn-outline-danger ms-4 desactive"
+                                                           style="margin-left: 10px" rel="{{ mat.id }}"
+                                   data-toggle-name="{{  mat.name }}">
+                                                            <i class="fas fa-trash"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+  {% endblock %}
+
+ {% block foot-javascript %}
+         <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'cork/plugins/apex/apexcharts.min.js'%}"></script>
+     <script src="{% static 'cork/plugins/table/datatable/datatables.js'%}"></script>
+    <script src="{% static 'cork/plugins/table/datatable/datatables.js'%}"></script>
+    <script src="{% static 'cork/plugins/table/datatable/button-ext/dataTables.buttons.min.js'%}"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+<script>
+
+$("#listing").DataTable(
+    {
+    "language": {
+        "url": "{% static 'dataTable-fr.json' %}"
+    },
+});
+                        $.ajax({
+                        type:'GET',
+                        url: '{% url 'dash_pie' %}',
+                        success: function(response){
+
+                           var options = {
+                                      chart: {
+                                          type: 'donut',
+                                          width: 380
+                                      },
+                                      //colors: ['#2196f3', '#e2a03f', '#8738a7'],
+                                      dataLabels: {
+                                        enabled: false
+                                      },
+                                      legend: {
+                                          position: 'bottom',
+                                          horizontalAlign: 'center',
+                                          fontSize: '14px',
+                                          markers: {
+                                            width: 10,
+                                            height: 10,
+                                          },
+                                          itemMargin: {
+                                            horizontal: 0,
+                                            vertical: 8
+                                          }
+                                      },
+                                      plotOptions: {
+                                        pie: {
+                                          donut: {
+                                            size: '65%',
+                                            background: 'transparent',
+                                            labels: {
+                                              show: true,
+                                              name: {
+                                                show: true,
+                                                fontSize: '14px',
+                                                fontFamily: 'Nunito, sans-serif',
+                                                color: undefined,
+                                                offsetY: -10
+                                              },
+                                              value: {
+                                                show: true,
+                                                fontSize: '26px',
+                                                fontFamily: 'Nunito, sans-serif',
+                                                color: '20',
+                                                offsetY: 16,
+                                                formatter: function (val) {
+                                                  return val
+                                                }
+                                              },
+                                              total: {
+                                                show: true,
+                                                showAlways: true,
+                                                label: 'Total',
+                                                color: '#888ea8',
+                                                formatter: function (w) {
+                                                  return w.globals.seriesTotals.reduce( function(a, b) {
+                                                    return a + b
+                                                  }, 0)
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      stroke: {
+                                        show: true,
+                                        width: 25,
+                                      },
+                                      series: response[0].series,
+                                      labels: response[0].label,
+                                      responsive: [{
+                                          breakpoint: 1599,
+                                          options: {
+                                              chart: {
+                                                  width: '350px',
+                                                  height: '400px'
+                                              },
+                                              legend: {
+                                                  position: 'bottom'
+                                              }
+                                          },
+
+                                          breakpoint: 1439,
+                                          options: {
+                                              chart: {
+                                                  width: '250px',
+                                                  height: '390px'
+                                              },
+                                              legend: {
+                                                  position: 'bottom'
+                                              },
+                                              plotOptions: {
+                                                pie: {
+                                                  donut: {
+                                                    size: '65%',
+                                                  }
+                                                }
+                                              }
+                                          },
+                                      }]
+                                  }
+
+                                  var chart = new ApexCharts(
+                                      document.querySelector("#source"),
+                                      options
+                                  );
+                            chart.render();
+
+
+
+
+
+
+
+                            alert(cData)
+                        }
+                    });
+</script>
+{% endblock %}

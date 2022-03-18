@@ -1,0 +1,190 @@
+{% extends 'cork/base.html' %}
+{% load static %}
+
+ {% load widget_tweaks %}
+ {% load crispy_forms_tags %}
+  {% block head-css %}
+	<link href="{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}" rel="stylesheet" type="text/css" />
+  {% endblock %}
+
+      {% block app-Title%}{% endblock %}
+{% block breadcrumb%}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0);">Gestion des Entrepots/Bureaux</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="javscript:void(0);">Ajouter</a></li>
+    </ol>
+{% endblock %}
+
+{% block button-action%}
+
+    <a href="{% url 'entrepot.Add' %}" class="btn btn-outline-primary">Ajouter un Entrepot/Bureau</a>
+{% endblock %}
+  {% block content %}
+    {% for message in messages %}
+        <div style="display: none" id="message">
+
+            {{ message | safe }}
+        </div>
+    {% endfor %}
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-bottom:24px;">
+          <form method="post" action="{% url 'dashboard' %}" novalidate>
+            {% csrf_token %}
+					<div class="col-xl-12 mx-auto">
+						<!--breadcrumb-->
+
+				<!--end breadcrumb-->
+						<hr/>
+						  <div class="card radius-10">
+					<div class="card-body">
+						<div class="d-flex align-items-center">
+							<div>
+								<h5 class="mb-0">Liste </h5>
+							</div>
+							<div class="font-22 ms-auto"><i class="bx bx-dots-horizontal-rounded"></i>
+							</div>
+						</div>
+						<hr>
+						<div class="table-responsive">
+							<table class="table align-middle mb-0">
+								<thead class="table-light">
+									<tr>
+										<th>#</th>
+										<th>Ref</th>
+										<th>site</th>
+										<th>Nom court du lieu</th>
+										<th>Date de creation</th>
+
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+                                {% for entrepots in entrepots_List %}
+									<tr>
+										<td>{{ entrepots.id }}</td>
+										<td>{{ entrepots.reference }}</td>
+										<td>{{ entrepots.site.libelle }}</td>
+										<td>{{ entrepots.libelle }}</td>
+
+										<td>{{ entrepots.created_at }}</td>
+
+										<td>
+											 <div class="d-flex order-actions">
+                                                        <a href="{% url 'entrepot.detail' entrepots.id %}" class="btn btn-outline-info ms-4"><i class="fas fa-cog"></i></a>
+                                                        <a href="javascript:;" class="btn btn-outline-danger ms-4 desactive"
+                                                           style="margin-left: 10px" rel="{{ entrepots.id }}"
+                                   data-toggle-name="{{  entrepots.libelle }}">
+                                                            <i class="fas fa-trash"></i></a>
+                                                    </div>
+										</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+					</div>
+          </form>
+
+    </div>
+
+            <div class="modal fade " id="modal-default">
+                      <form method="POST" action="{% url 'site.delete' %}">
+                        <div class="modal-dialog ">
+                          <div class="modal-content ">
+                            <div class="modal-header">
+
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body" style="alignment: center">
+                     <!-- Create a Form -->
+
+                                <!-- Security token by Django -->
+                                {% csrf_token %}
+                                <h5 id="text-alert">ÊTES VOUS SUR DE VOULOIR DÉSACTIVER/ACTIVER LA STRUCTURE?  </h5>
+                                <h3 style="font-weight: bold" id="name"></h3>
+
+                                <input type="hidden" value="" name="pk" id="pk" />
+                                <input type="hidden" value="" name="is_active" id="is_active" />
+
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Fermer</button>
+                      <button type="submit" class="btn btn-danger" id="confirm">Confimer</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                      </form>
+                <!-- /.modal-dialog -->
+              </div>
+    {% endblock %}
+
+{% block foot-javascript %}
+  <script>
+
+    $(".desactive").click(function(){
+         $("#pk").val($(this).attr("rel"))
+         $("#is_active").val($(this).attr("rev"))
+         $("#name").html('<center> " ' + $(this).attr("data-toggle-name")+' " ? </center>')
+
+          action = "SUPPRIMER"
+          if($(this).attr("rev") == "True") {
+              action = "DÉSACTIVER"
+          }
+
+          $("#text-alert").html("<b>ÊTES VOUS SUR DE VOULOIR "+action+" </b>")
+          $("#confirm").html(action)
+          $('#modal-default').modal({
+              //show : true,
+              backdrop : 'static',
+              keyboard:false
+          });
+
+      });
+   $(document).on('change', '.model', function() {
+       loadImage()
+    });
+ loadImage()
+   function loadImage() {
+       model = $('.model').val()
+
+       if(model) {
+           $.ajax({
+                    url : '{% url 'loadImage' %}' ,
+                    method : 'GET' ,
+                    data: { id : model },
+                    success : function(data){
+                        if(data.image != ""){
+                            $("#logoFabricant").attr("src",data.image)
+                         //$("#logoFabricant").src =data.image
+                        }else{
+                           $("#logoFabricant").attr("src",'{% static 'rakuda/assets/plugins/smart-wizard/css/smart_wizard_all.min.css'%}')
+                        }
+                        //console.log(data.image)
+                    }
+                });
+       }
+   }
+{% if messages %}
+     {% for message in messages %}
+         message = $("#message").html()
+         console.log(message)
+        notif(message)
+	{% endfor %}
+{% endif %}
+
+  function notif(message) {
+      Lobibox.notify("success", {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            msg: message
+        });
+  }
+
+  </script>
+ {% endblock %}
